@@ -13,12 +13,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-
 @WebServlet("/invoice")
 public class UserDetails extends HttpServlet {
     public static int invoiceid = 99;
     public Gson gson = new Gson();
-
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         try {
@@ -51,19 +49,15 @@ public class UserDetails extends HttpServlet {
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
-            sendErrorResponse(res, "An error occurred: " + e.getMessage());
         }
     }
-
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/invoice", "root", "bharath123@#");
     }
-
     public boolean checkEmpty(String name, String address, String city, String zipcode, String country, String mobile, String email, String date) {
         return name.isEmpty() || address.isEmpty() || city.isEmpty() || zipcode.isEmpty() || country.isEmpty() || mobile.isEmpty() || email.isEmpty() || date.isEmpty();
     }
-
     public void sendErrorResponse(HttpServletResponse res, String message) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -73,7 +67,6 @@ public class UserDetails extends HttpServlet {
         out.println(gson.toJson(errorResponse));
         out.flush();
     }
-
     public int insertCustomer(Connection con, String name, String date, String address, String city, String zipcode, String country, String mobile, String email) throws SQLException {
         PreparedStatement stmt = con.prepareStatement("SELECT cus_id FROM customers WHERE name=? AND address=? AND city=? AND zipcode=? AND country=? AND mobile=? AND email=?");
         stmt.setString(1, name);
@@ -105,13 +98,12 @@ public class UserDetails extends HttpServlet {
             }
         }
     }
-
     public double[] processProducts(Connection con, JsonArray productsArray, int customerId, JsonArray productDetailsArray) throws SQLException {
         double total = 0;
         double totaltax = 0;
         Statement stmt = con.createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM invoiceproducts");
-        while (resultSet.next()) {
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM invoiceproducts ORDER BY inv_id DESC LIMIT 1");
+        if (resultSet.next()) {
             invoiceid = resultSet.getInt("inv_id");
         }
         invoiceid++;
@@ -136,7 +128,6 @@ public class UserDetails extends HttpServlet {
         }
         return new double[]{total, totaltax};
     }
-
     public double getPrice(Connection con, String product) throws SQLException {
         PreparedStatement pdst = con.prepareStatement("SELECT price FROM products WHERE name = ?");
         pdst.setString(1, product);
@@ -146,7 +137,6 @@ public class UserDetails extends HttpServlet {
         }
         return 0;
     }
-
     public void addProductToInvoice(Connection con, String product, int quantity, double tax, double subtotal, int invoiceid) throws SQLException {
         PreparedStatement insertinvprod = con.prepareStatement("INSERT INTO invoiceproducts(name, quantity, tax, subtotal, inv_id) VALUES (?, ?, ?, ?, ?)");
         insertinvprod.setString(1, product);
@@ -156,7 +146,6 @@ public class UserDetails extends HttpServlet {
         insertinvprod.setInt(5, invoiceid);
         insertinvprod.executeUpdate();
     }
-
     public void insertOrder(Connection con, int customerId, String name, double totaltax, double total, int invoiceid) throws SQLException {
         PreparedStatement insertorders = con.prepareStatement("INSERT INTO orders(cus_id, cus_name, totaltax, totalamount, inv_id) VALUES (?, ?, ?, ?, ?)");
         insertorders.setInt(1, customerId);
@@ -166,7 +155,6 @@ public class UserDetails extends HttpServlet {
         insertorders.setInt(5, invoiceid);
         insertorders.executeUpdate();
     }
-
     public JsonObject createResponseJson(int customerId, String name, String date, String address, String city, String zipcode, String country, String mobile, String email, double[] totals, JsonArray productDetailsArray) {
         JsonObject responseJson = new JsonObject();
         JsonObject customerJson = new JsonObject();

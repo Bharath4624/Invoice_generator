@@ -11,11 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-
 @WebServlet("/products")
 public class ProductDetails extends HttpServlet {
     public Gson gson = new Gson();
-
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -41,16 +39,13 @@ public class ProductDetails extends HttpServlet {
             e.printStackTrace();
         }
     }
-
     public boolean checkOptions(String option1, String option2) {
         return (option1 == null && option2 == null) || (option1 != null && option2 != null);
     }
-
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/invoice", "root", "bharath123@#");
     }
-
     public String getAllProducts(Connection con) throws SQLException {
         String query = "SELECT * FROM products ORDER BY name ASC";
         PreparedStatement pdst = con.prepareStatement(query);
@@ -66,7 +61,6 @@ public class ProductDetails extends HttpServlet {
         response.add("Products", products);
         return gson.toJson(response);
     }
-
     public String getProductSales(Connection con) throws SQLException {
         String query = "SELECT name, SUM(subtotal), SUM(quantity) FROM invoiceproducts GROUP BY name ORDER BY SUM(subtotal) DESC";
         PreparedStatement pdst = con.prepareStatement(query);
