@@ -107,7 +107,7 @@ ResultSet rs = null;
             }
             %>
             <tr>
-                <td colspan="3">
+                <td>
                     <input type="submit" name="Submit" value="Get invoice"/>
                 </td>
             </tr>
