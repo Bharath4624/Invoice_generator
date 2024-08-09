@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 @WebServlet("/invoice")
-public class UserDetails extends HttpServlet {
+public class CreateInvoice extends HttpServlet {
     public Gson gson = new Gson();
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) {
