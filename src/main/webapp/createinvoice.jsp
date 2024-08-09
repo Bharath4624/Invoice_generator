@@ -50,17 +50,15 @@ ResultSet rs = null;
             })
             .then(response => response.json()).then(data => {
                 console.log(data);
-                displayResult(data);
+                displayResult();
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Please try again');
             });
         }
-        function displayResult(data) {
-            const resultDiv = document.getElementById('result');
-            const jsonString = JSON.stringify(data, null, 2);
-            resultDiv.textContent = jsonString;
+        function displayResult() {
+            window.location.href="invoice.jsp";
         }
     </script>
 </head>
@@ -108,9 +106,6 @@ ResultSet rs = null;
                 <td>
                     <input type="submit" name="Submit" value="Get invoice"/>
                 </td>
-            </tr>
-            <tr>
-            <td><a href="invoice.jsp">See invoice</a></td>
             </tr>
         </table>
     </form>
