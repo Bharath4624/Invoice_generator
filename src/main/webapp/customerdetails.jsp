@@ -8,11 +8,10 @@
             try {
                 const requestData = JSON.stringify({ option: option });
                 const response = await fetch('customers', {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    },
-                    body: requestData
+                        requestData
+                    }
                 });
                 if (response.ok) {
                     const responseData = await response.json();

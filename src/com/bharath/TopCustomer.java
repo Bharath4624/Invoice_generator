@@ -15,7 +15,7 @@ import java.sql.*;
 public class TopCustomer extends HttpServlet {
     public Gson gson = new Gson();
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
         try {

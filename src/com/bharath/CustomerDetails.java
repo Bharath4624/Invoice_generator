@@ -14,7 +14,7 @@ import java.sql.*;
 public class CustomerDetails extends HttpServlet {
     public Gson gson = new Gson();
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
         try {
