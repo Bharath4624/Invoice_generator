@@ -44,7 +44,6 @@ public class OrderDetails extends HttpServlet {
 
     public JsonObject getOrderDetails(ResultSet rs) throws SQLException {
         JsonArray orders = new JsonArray();
-
         while (rs.next()) {
             JsonObject obj = new JsonObject();
             int cus_id = rs.getInt("cus_id");
