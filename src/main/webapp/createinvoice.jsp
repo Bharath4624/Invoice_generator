@@ -100,7 +100,7 @@ ResultSet rs = null;
                     <input type="checkbox" name="product" value="<%= rs.getString(1) %>"/><%= rs.getString(1) %>
                 </td>
                 <td>
-                    <input type="number" min="1" name="quantity<%= rs.getString(1) %>" value="1"/>
+                    <input type="number" min="1" name="quantity<%=rs.getString(1)%>" value="1"/>
                 </td>
                 <td><%= rs.getDouble(2) %></td>
             </tr>
