@@ -42,10 +42,6 @@ public class ProductDetails extends HttpServlet {
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
-            JsonObject errorResponse = new JsonObject();
-            errorResponse.addProperty("error", "An error occurred");
-            PrintWriter out = res.getWriter();
-            out.println(gson.toJson(errorResponse));
         }
     }
     public Connection getConnection() throws ClassNotFoundException, SQLException {
