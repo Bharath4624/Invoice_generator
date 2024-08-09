@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -15,36 +16,56 @@ import java.sql.*;
 public class CustomerDetails extends HttpServlet {
     public Gson gson = new Gson();
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-        PrintWriter out = res.getWriter();
-        String option1 = req.getParameter("allcustomers");
-        String option2 = req.getParameter("onlyorderdetails");
-        if ((option1 == null && option2 == null) || (!(option1 == null) && !(option2 == null))) {
-            out.println("Please select one option");
+        StringBuilder jsonBuffer = new StringBuilder();
+        try (BufferedReader reader = req.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBuffer.append(line);
+            }
+        }
+        JsonObject jsonObject = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
+        String option = jsonObject.get("option").getAsString();
+        if (option == null || (!"customers".equalsIgnoreCase(option) && !"orders".equalsIgnoreCase(option))) {
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("error", "Please select a valid option");
+            try (PrintWriter out = res.getWriter()) {
+                out.println(gson.toJson(errorResponse));
+            }
             return;
         }
         try (Connection con = getConnection();
-             PreparedStatement pstmt = createPreparedStatement(con, option1, option2);
+             PreparedStatement pstmt = createPreparedStatement(con, option);
              ResultSet rs = pstmt.executeQuery()) {
-            if ("allcustomers".equalsIgnoreCase(option1) || "allcustomerdetails".equalsIgnoreCase(option1)) {
-                out.println(gson.toJson(getCustomerDetails(rs)));
+            JsonObject responseJson;
+            if ("customers".equalsIgnoreCase(option)) {
+                responseJson = getCustomerDetails(rs);
             } else {
-                out.println(gson.toJson(getOrderDetails(rs)));
+                responseJson = getOrderDetails(rs);
             }
-            out.flush();
+            try (PrintWriter out = res.getWriter()) {
+                out.println(gson.toJson(responseJson));
+                out.flush();
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("error", "An error occurred");
+            try (PrintWriter out = res.getWriter()) {
+                out.println(gson.toJson(errorResponse));
+            }
         }
     }
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/invoice", "root", "bharath123@#");
     }
-    public PreparedStatement createPreparedStatement(Connection con, String option1, String option2) throws SQLException {
+
+    public PreparedStatement createPreparedStatement(Connection con, String option) throws SQLException {
         String query;
-        if ("allcustomers".equalsIgnoreCase(option1) || "allcustomerdetails".equalsIgnoreCase(option1)) {
+        if ("customers".equalsIgnoreCase(option)) {
             query = "SELECT * FROM customers";
         } else {
             query = "SELECT * FROM orders";
@@ -74,11 +95,11 @@ public class CustomerDetails extends HttpServlet {
             obj.addProperty("Customer_name", rs.getString("cus_name"));
             obj.addProperty("invoice_id", rs.getInt("inv_id"));
             obj.addProperty("Total_tax", rs.getDouble("totaltax"));
-            obj.addProperty("Total_amount", rs.getDouble("totalamount"));
+            obj.addProperty("Invoice_id", rs.getInt("inv_id"));
             orders.add(obj);
         }
         JsonObject response = new JsonObject();
-        response.add("Order_details", orders);
+        response.add("Orders", orders);
         return response;
     }
 }
