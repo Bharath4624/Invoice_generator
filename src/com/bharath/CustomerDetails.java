@@ -19,43 +19,35 @@ public class CustomerDetails extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-        StringBuilder jsonBuffer = new StringBuilder();
-        try (BufferedReader reader = req.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonBuffer.append(line);
-            }
-        }
-        JsonObject jsonObject = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
+        BufferedReader reader = req.getReader();
+        JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
         String option = jsonObject.get("option").getAsString();
         if (option == null || (!"customers".equalsIgnoreCase(option) && !"orders".equalsIgnoreCase(option))) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "Please select a valid option");
-            try (PrintWriter out = res.getWriter()) {
-                out.println(gson.toJson(errorResponse));
-            }
+            PrintWriter out = res.getWriter();
+            out.println(gson.toJson(errorResponse));
             return;
         }
-        try (Connection con = getConnection();
-             PreparedStatement pstmt = createPreparedStatement(con, option);
-             ResultSet rs = pstmt.executeQuery()) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement pstmt = createPreparedStatement(con, option);
+            ResultSet rs = pstmt.executeQuery();
             JsonObject responseJson;
             if ("customers".equalsIgnoreCase(option)) {
                 responseJson = getCustomerDetails(rs);
             } else {
                 responseJson = getOrderDetails(rs);
             }
-            try (PrintWriter out = res.getWriter()) {
+            PrintWriter out = res.getWriter();
                 out.println(gson.toJson(responseJson));
                 out.flush();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "An error occurred");
-            try (PrintWriter out = res.getWriter()) {
-                out.println(gson.toJson(errorResponse));
-            }
+            PrintWriter out = res.getWriter();
+            out.println(gson.toJson(errorResponse));
         }
     }
     public Connection getConnection() throws ClassNotFoundException, SQLException {

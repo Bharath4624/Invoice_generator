@@ -17,10 +17,12 @@
                 if (response.ok) {
                     const responseData = await response.json();
                     document.getElementById('response').textContent = JSON.stringify(responseData, null, 2);
-                } else {
+                }
+                else {
                     document.getElementById('response').textContent = 'Error: ' + response.statusText;
                 }
-            } catch (error) {
+            }
+            catch (error) {
                 document.getElementById('response').textContent = 'Error: ' + error.message;
             }
         }
