@@ -35,6 +35,10 @@ public class CreateInvoice extends HttpServlet {
                 sendErrorResponse(res, "Please fill customer details first");
                 return;
             }
+            if (productsArray.isEmpty()) {
+                sendErrorResponse(res, "Please choose the products");
+                return;
+            }
             Connection con = getConnection();
             int customerId = insertCustomer(con, name, date, address, city, zipcode, country, mobile, email);
             JsonArray productDetailsArray = new JsonArray();
@@ -62,7 +66,7 @@ public class CreateInvoice extends HttpServlet {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
         JsonObject errorResponse = new JsonObject();
-        errorResponse.addProperty("error", message);
+        errorResponse.addProperty("Failed", message);
         PrintWriter out = res.getWriter();
         out.println(gson.toJson(errorResponse));
         out.flush();
