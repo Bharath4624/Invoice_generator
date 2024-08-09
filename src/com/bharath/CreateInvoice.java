@@ -98,7 +98,7 @@ public class CreateInvoice extends HttpServlet {
             if (generatedKeys.next()) {
                 return generatedKeys.getInt(1);
             } else {
-                throw new SQLException("Creating customer failed, no ID obtained.");
+                throw new SQLException("Creating customer failed");
             }
         }
     }
