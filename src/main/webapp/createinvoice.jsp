@@ -48,8 +48,7 @@ ResultSet rs = null;
                 },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.json()).then(data => {
                 console.log(data);
                 displayResult(data);
             })
