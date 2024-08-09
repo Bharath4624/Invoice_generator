@@ -27,6 +27,11 @@ ResultSet rs = null;
                 mobno: document.querySelector('input[name="mobno"]').value,
                 email: document.querySelector('input[name="email"]').value
             };
+            const emptyfields=Object.values(customerData).some(value=>value==='');
+            if(emptyfields){
+            alert("please fill customer details");
+            return;
+            }
             const products = [];
             const productRows = document.querySelectorAll('input[name="product"]:checked');
             productRows.forEach((checkbox) => {
@@ -37,6 +42,10 @@ ResultSet rs = null;
                     quantity: parseInt(quantity, 10)
                 });
             });
+            if(products.length==0){
+            alert("please select products");
+            return;
+            }
             const formData = {
                 customer: customerData,
                 products: products
