@@ -29,7 +29,7 @@
     </script>
 </head>
 <body>
-    <h2>Choose the type of data you want</h2>
+     <h3>Click to see the data</h3>
     <button onclick="sendRequest('orders')">Order details</button>
     <pre id="response"></pre>
 </body>
