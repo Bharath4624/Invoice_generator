@@ -12,10 +12,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-@WebServlet("/customers")
-public class CustomerDetails extends HttpServlet {
+
+@WebServlet("/sales")
+public class SalesDetails extends HttpServlet {
     public Gson gson = new Gson();
-    @Override
+
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -25,32 +26,32 @@ public class CustomerDetails extends HttpServlet {
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers");
-            JsonObject responseJson = getCustomerDetails(rs);
+            ResultSet rs = stmt.executeQuery("SELECT name, SUM(subtotal), SUM(quantity) FROM invoiceproducts GROUP BY name ORDER BY SUM(subtotal) DESC");
+            JsonObject response = getProductSales(rs);
             PrintWriter out = res.getWriter();
-            out.println(gson.toJson(responseJson));
+            out.println(gson.toJson(response));
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/invoice", "root", "bharath123@#");
     }
-    public JsonObject getCustomerDetails(ResultSet rs) throws SQLException {
-        JsonArray customers = new JsonArray();
+
+    public JsonObject getProductSales(ResultSet rs) throws SQLException {
+        JsonArray productSales = new JsonArray();
         while (rs.next()) {
             JsonObject obj = new JsonObject();
-            obj.addProperty("Id", rs.getInt("cus_id"));
-            obj.addProperty("Name", rs.getString("name"));
-            obj.addProperty("Address", rs.getString("address") + "-" + rs.getString("city") + "-" + rs.getString("zipcode") + "-" + rs.getString("country"));
-            obj.addProperty("Mobile", rs.getString("mobile"));
-            obj.addProperty("Email_Id", rs.getString("email"));
-            customers.add(obj);
+            obj.addProperty("Product_Name", rs.getString(1));
+            obj.addProperty("Quantity_sold", rs.getInt(3));
+            obj.addProperty("Total_amount", rs.getDouble(2));
+            productSales.add(obj);
         }
         JsonObject response = new JsonObject();
-        response.add("Customer_details", customers);
+        response.add("Product_sales", productSales);
         return response;
     }
 }

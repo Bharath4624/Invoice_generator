@@ -31,7 +31,6 @@
 <body>
     <h2>Choose the type of data you want</h2>
     <button onclick="sendRequest('products')">All products</button>
-    <button onclick="sendRequest('sales')">Sales details of products</button>
     <pre id="response"></pre>
 </body>
 </html>

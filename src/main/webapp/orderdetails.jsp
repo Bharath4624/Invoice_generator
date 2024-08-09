@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Top customers</title>
+    <title>Customer Details</title>
     <script>
         async function sendRequest(option) {
             try {
                 const requestData = JSON.stringify({ option: option });
-                const response = await fetch('purchase', {
+                const response = await fetch('orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=UTF-8'
@@ -30,7 +30,7 @@
 </head>
 <body>
     <h2>Choose the type of data you want</h2>
-    <button onclick="sendRequest('purchase')">Top customers</button>
+    <button onclick="sendRequest('orders')">Order details</button>
     <pre id="response"></pre>
 </body>
 </html>

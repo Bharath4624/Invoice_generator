@@ -30,8 +30,7 @@
 </head>
 <body>
     <h2>Choose the type of data you want</h2>
-    <button onclick="sendRequest('customers')">All customer data</button>
-    <button onclick="sendRequest('orders')">Order details</button>
+    <button onclick="sendRequest('customers')">Customer details</button>
     <pre id="response"></pre>
 </body>
 </html>

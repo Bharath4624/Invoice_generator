@@ -24,14 +24,11 @@ public class ProductDetails extends HttpServlet {
         String option = jsonObject.get("option").getAsString();
         try {
             Connection con = getConnection();
-            String responseJson;
-            if ("products".equalsIgnoreCase(option)) {
-                responseJson = getAllProducts(con);
-            } else {
-                responseJson = getProductSales(con);
-            }
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products ORDER BY name ASC");
+            JsonObject responseJson = getAllProducts(rs);
             PrintWriter out = res.getWriter();
-            out.println(responseJson);
+            out.println(gson.toJson(responseJson));
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,10 +38,8 @@ public class ProductDetails extends HttpServlet {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/invoice", "root", "bharath123@#");
     }
-    public String getAllProducts(Connection con) throws SQLException {
-        String query = "SELECT * FROM products ORDER BY name ASC";
-        PreparedStatement pdst = con.prepareStatement(query);
-        ResultSet rs = pdst.executeQuery();
+
+    public JsonObject getAllProducts(ResultSet rs) throws SQLException {
         JsonArray products = new JsonArray();
         while (rs.next()) {
             JsonObject obj = new JsonObject();
@@ -54,22 +49,6 @@ public class ProductDetails extends HttpServlet {
         }
         JsonObject response = new JsonObject();
         response.add("Products", products);
-        return gson.toJson(response);
-    }
-    public String getProductSales(Connection con) throws SQLException {
-        String query = "SELECT name, SUM(subtotal), SUM(quantity) FROM invoiceproducts GROUP BY name ORDER BY SUM(subtotal) DESC";
-        PreparedStatement pdst = con.prepareStatement(query);
-        ResultSet rs = pdst.executeQuery();
-        JsonArray productSales = new JsonArray();
-        while (rs.next()) {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("Product_Name", rs.getString(1));
-            obj.addProperty("Quantity_sold", rs.getInt(3));
-            obj.addProperty("Total_amount", rs.getDouble(2));
-            productSales.add(obj);
-        }
-        JsonObject response = new JsonObject();
-        response.add("Product_sales", productSales);
-        return gson.toJson(response);
+        return response;
     }
 }
