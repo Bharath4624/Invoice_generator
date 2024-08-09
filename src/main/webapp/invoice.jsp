@@ -93,7 +93,7 @@ if(orders.next()){
     <div class="Customer">
         <p><b>BILL TO</b></p>
         <p class="customername"><b><%=customers.getString("name")%></b></p>
-        <p>Customer id:<%=customers.getInt("cus_id")%></p>
+        <p>Id:<%=customers.getInt("cus_id")%></p>
         <p><%=customers.getString("address")%></p>
         <p><%=customers.getString("city")%></p>
         <p><%=customers.getString("zipcode")%></p>
@@ -104,7 +104,7 @@ if(orders.next()){
     <div class="Shipping">
         <p><b>SHIP TO</b></p>
         <p class="customername"><b><%=customers.getString("name")%></b></p>
-        <p>Customer id:<%=customers.getInt("cus_id")%></p>
+        <p>Id:<%=customers.getInt("cus_id")%></p>
         <p><%=customers.getString("address")%></p>
         <p><%=customers.getString("city")%></p>
         <p><%=customers.getString("zipcode")%></p>
