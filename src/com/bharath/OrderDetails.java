@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
@@ -18,12 +16,9 @@ public class OrderDetails extends HttpServlet {
     public Gson gson = new Gson();
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-        BufferedReader reader = req.getReader();
-        JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-        String option = jsonObject.get("option").getAsString();
         try {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
