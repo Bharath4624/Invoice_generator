@@ -22,7 +22,7 @@ public class CustomerDetails extends HttpServlet {
         BufferedReader reader = req.getReader();
         JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
         String option = jsonObject.get("option").getAsString();
-        if (option == null || (!"customers".equalsIgnoreCase(option) && !"orders".equalsIgnoreCase(option))) {
+        if (!"customers".equalsIgnoreCase(option) && !"orders".equalsIgnoreCase(option)) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "Please select a valid option");
             PrintWriter out = res.getWriter();
@@ -40,8 +40,8 @@ public class CustomerDetails extends HttpServlet {
                 responseJson = getOrderDetails(rs);
             }
             PrintWriter out = res.getWriter();
-                out.println(gson.toJson(responseJson));
-                out.flush();
+            out.println(gson.toJson(responseJson));
+            out.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -111,6 +111,6 @@ ResultSet rs = null;
             </tr>
         </table>
     </form>
-    <div id="result"></div>
+    <pre id="result"></pre>
 </body>
 </html>

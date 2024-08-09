@@ -184,8 +184,8 @@ public class UserDetails extends HttpServlet {
         orderSummaryJson.addProperty("total_tax", totals[1]);
         orderSummaryJson.addProperty("customer_id", customerId);
         responseJson.add("customer", customerJson);
-        responseJson.add("order_summary", orderSummaryJson);
         responseJson.add("products", productDetailsArray);
+        responseJson.add("order_summary", orderSummaryJson);
         return responseJson;
     }
 }
