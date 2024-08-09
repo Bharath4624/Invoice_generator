@@ -59,7 +59,6 @@ ResultSet rs = null;
         }
         function displayResult(data) {
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '';
             const jsonString = JSON.stringify(data, null, 2);
             resultDiv.textContent = jsonString;
         }
