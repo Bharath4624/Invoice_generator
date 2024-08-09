@@ -44,9 +44,11 @@ public class OrderDetails extends HttpServlet {
 
     public JsonObject getOrderDetails(ResultSet rs) throws SQLException {
         JsonArray orders = new JsonArray();
+
         while (rs.next()) {
             JsonObject obj = new JsonObject();
-            obj.addProperty("Customer_id", rs.getInt("cus_id"));
+            int cus_id = rs.getInt("cus_id");
+            obj.addProperty("Customer_id", cus_id);
             obj.addProperty("Customer_name", rs.getString("cus_name"));
             obj.addProperty("Invoice_id", rs.getInt("inv_id"));
             obj.addProperty("Total_tax", rs.getDouble("totaltax"));
