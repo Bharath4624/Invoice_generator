@@ -109,6 +109,9 @@ ResultSet rs = null;
                     <input type="submit" name="Submit" value="Get invoice"/>
                 </td>
             </tr>
+            <tr>
+            <td><a href="invoice.jsp">See invoice</a></td>
+            </tr>
         </table>
     </form>
     <pre id="result"></pre>
