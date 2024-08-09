@@ -76,9 +76,6 @@ if(orders.next()){
 %>
     <h1>Invoice</h1>
     <h2>#INV-<%=orders.getInt("inv_id")%></h2>
-    <%
-    }
-    %>
     <div class="details">
         <p class="storename"><b>Store</b></p>
         <p>No.127, Abc street</p>
@@ -131,7 +128,6 @@ if(orders.next()){
                 <th>Amount</th>
             </tr>
             <%
-            if(orders.next()){
             int invid=orders.getInt("inv_id");
             Statement stmt3=con.createStatement();
             ResultSet products=stmt3.executeQuery("SELECT * FROM invoiceproducts WHERE inv_id=invid");
@@ -145,8 +141,6 @@ if(orders.next()){
             </tr>
             <%
             }
-            }
-            if(orders.next()){
             %>
             <tr>
                 <td><b>Total:</b></td>
@@ -162,6 +156,9 @@ if(orders.next()){
     }
     catch(Exception e){
     e.printStackTrace();
+    }
+    finally{
+    con.close();
     }
     %>
 </body>
