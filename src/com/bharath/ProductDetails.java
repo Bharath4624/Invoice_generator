@@ -22,13 +22,6 @@ public class ProductDetails extends HttpServlet {
         BufferedReader reader = req.getReader();
         JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
         String option = jsonObject.get("option").getAsString();
-        if (!"products".equalsIgnoreCase(option) && !"sales".equalsIgnoreCase(option)) {
-            JsonObject errorResponse = new JsonObject();
-            errorResponse.addProperty("error", "Please select a valid option");
-            PrintWriter out = res.getWriter();
-            out.println(gson.toJson(errorResponse));
-            return;
-        }
         try {
             Connection con = getConnection();
             String responseJson;

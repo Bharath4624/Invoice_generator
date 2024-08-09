@@ -15,6 +15,9 @@
     <tr>
     <td><a href="productdetails.jsp">Product details</a></td>
     </tr>
+    <tr>
+    <td><a href="topcustomer.jsp">Top customers</a></td>
+    </tr>
     </table>
 </body>
 </html>
