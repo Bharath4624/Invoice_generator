@@ -27,9 +27,9 @@ ResultSet rs = null;
                 mobno: document.querySelector('input[name="mobno"]').value,
                 email: document.querySelector('input[name="email"]').value
             };
-            const emptyfields=Object.values(customerData).some(value=>value==='');
-            if(emptyfields){
-            alert("please fill customer details");
+            const empty=Object.values(customerData).some(value=>value==='');
+            if(empty){
+            alert("Please fill all the customer details");
             return;
             }
             const products = [];
@@ -43,7 +43,7 @@ ResultSet rs = null;
                 });
             });
             if(products.length==0){
-            alert("please select products");
+            alert("Please add atleast 1 product");
             return;
             }
             const formData = {
