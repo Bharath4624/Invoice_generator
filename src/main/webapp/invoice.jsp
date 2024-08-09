@@ -130,7 +130,7 @@ if(orders.next()){
             <%
             int invid=orders.getInt("inv_id");
             Statement stmt3=con.createStatement();
-            ResultSet products=stmt3.executeQuery("SELECT * FROM invoiceproducts WHERE inv_id=invid");
+            ResultSet products=stmt3.executeQuery("SELECT * FROM invoiceproducts WHERE inv_id="+invid);
             while(products.next()){
             %>
             <tr>
@@ -144,7 +144,6 @@ if(orders.next()){
             %>
             <tr>
                 <td><b>Total:</b></td>
-                <td></td>
                 <td></td>
                 <td><b><%=orders.getDouble("totaltax")%></b></td>
                 <td><b><%=orders.getDouble("totalamount")%></b></td>
