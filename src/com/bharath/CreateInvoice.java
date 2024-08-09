@@ -49,7 +49,7 @@ public class CreateInvoice extends HttpServlet {
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
             PrintWriter out = res.getWriter();
-            out.println(gson.toJson(responseJson));
+            out.println(responseJson.toString());
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
