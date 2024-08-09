@@ -81,9 +81,9 @@ public class CustomerDetails extends HttpServlet {
             JsonObject obj = new JsonObject();
             obj.addProperty("Customer_id", rs.getInt("cus_id"));
             obj.addProperty("Customer_name", rs.getString("cus_name"));
-            obj.addProperty("invoice_id", rs.getInt("inv_id"));
-            obj.addProperty("Total_tax", rs.getDouble("totaltax"));
             obj.addProperty("Invoice_id", rs.getInt("inv_id"));
+            obj.addProperty("Total_tax", rs.getDouble("totaltax"));
+            obj.addProperty("Total_amount", rs.getDouble("totalamount"));
             orders.add(obj);
         }
         JsonObject response = new JsonObject();

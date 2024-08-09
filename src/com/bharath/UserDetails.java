@@ -17,7 +17,7 @@ import java.sql.*;
 public class UserDetails extends HttpServlet {
     public Gson gson = new Gson();
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
         try {
             BufferedReader reader = req.getReader();
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
@@ -39,7 +39,7 @@ public class UserDetails extends HttpServlet {
             int customerId = insertCustomer(con, name, date, address, city, zipcode, country, mobile, email);
             JsonArray productDetailsArray = new JsonArray();
             int invoiceid = insertOrder(con, customerId, name, 0, 0);
-            double[] totals = processProducts(con, productsArray, customerId, productDetailsArray, invoiceid);
+            double[] totals = processProducts(con, productsArray, productDetailsArray, invoiceid);
             updateOrders(con, totals, invoiceid);
             JsonObject responseJson = createResponseJson(customerId, name, date, address, city, zipcode, country, mobile, email, totals, productDetailsArray, invoiceid);
             res.setContentType("application/json");
@@ -99,16 +99,15 @@ public class UserDetails extends HttpServlet {
         }
     }
 
-    public double[] processProducts(Connection con, JsonArray productsArray, int customerId, JsonArray productDetailsArray, int invoiceid) throws SQLException {
+    public double[] processProducts(Connection con, JsonArray productsArray, JsonArray productDetailsArray, int invoiceid) throws SQLException {
         double total = 0;
         double totaltax = 0;
-        Statement stmt = con.createStatement();
         for (JsonElement productElement : productsArray) {
             JsonObject productObj = productElement.getAsJsonObject();
             String productName = productObj.get("name").getAsString();
             int quantity = productObj.get("quantity").getAsInt();
             double price = getPrice(con, productName);
-            double tax = 0;
+            double tax;
             double subtotal = (price * quantity);
             tax = (12 * subtotal) / 100;
             subtotal += tax;
