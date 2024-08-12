@@ -22,6 +22,7 @@
         function displayData(customers) {
             const table = document.createElement('table');
             table.border = '1';
+            table.width='100%';
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
             ['Id', 'Name', 'Address', 'Mobile', 'Email_Id'].forEach(headerText => {
