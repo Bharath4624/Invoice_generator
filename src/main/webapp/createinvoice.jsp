@@ -28,10 +28,6 @@ ResultSet rs = null;
                 email: document.querySelector('input[name="email"]').value
             };
             const empty=Object.values(customerData).some(value=>value==='');
-            if(empty){
-            alert("Please fill all the customer details");
-            return;
-            }
             const products = [];
             const productRows = document.querySelectorAll('input[name="product"]:checked');
             productRows.forEach((checkbox) => {
@@ -42,6 +38,14 @@ ResultSet rs = null;
                     quantity: parseInt(quantity, 10)
                 });
             });
+            if(empty && products.length==0){
+            alert("Please fill customer details and select atleast 1 product to place order");
+            return;
+            }
+            if(empty){
+            alert("Please fill all the customer details");
+            return;
+            }
             if(products.length==0){
             alert("Please add atleast 1 product");
             return;
