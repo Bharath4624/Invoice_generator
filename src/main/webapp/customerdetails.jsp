@@ -43,7 +43,6 @@
             });
             table.appendChild(tbody);
             const responseDiv = document.getElementById('response');
-            responseDiv.innerHTML = '';
             responseDiv.appendChild(table);
         }
     </script>

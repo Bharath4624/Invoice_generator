@@ -52,7 +52,6 @@
             table.appendChild(thead);
             table.appendChild(tbody);
             const responseElement = document.getElementById('response');
-            responseElement.innerHTML = '';
             responseElement.appendChild(table);
         }
     </script>
