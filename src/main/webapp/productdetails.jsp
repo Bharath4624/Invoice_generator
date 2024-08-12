@@ -4,32 +4,37 @@
 <head>
     <title>Product Details</title>
     <script>
-        async function sendRequest(option) {
+        async function sendRequest() {
             try {
-                const requestData = JSON.stringify({ option: option });
                 const response = await fetch('products', {
                     method: 'GET',
                     headers: {
-                        requestData
+                        'Content-Type': 'application/json'
                     }
                 });
                 if (response.ok) {
                     const responseData = await response.json();
-                    document.getElementById('response').textContent = JSON.stringify(responseData, null, 2);
+                    displayTable(responseData);
+                } else {
+                    document.getElementById('response').textContent = 'Error: ' + response.statusText;
                 }
-                else {
-                    document.getElementById('response').textContent='Error:'+response.statusText;
-                }
+            } catch (error) {
+                document.getElementById('response').textContent = 'Error: ' + error.message;
             }
-            catch (error) {
-                document.getElementById('response').textContent='Error:'+error.message;
-            }
+        }
+        function displayTable(data) {
+            const products = data.Products;
+            let tableHtml = '<table border="1" cellpadding="5" cellspacing="0"><thead><tr><th>Name</th><th>Price</th></tr></thead><tbody>';
+            products.forEach(product => {
+                tableHtml += `<tr><td>${product.Name}</td><td>${product.Price}</td></tr>`;
+            });
+            tableHtml += '</tbody></table>';
+            document.getElementById('response').innerHTML = tableHtml;
         }
     </script>
 </head>
-<body>
-     <h3>Click to see the data</h3>
-    <button onclick="sendRequest('products')">All products</button>
-    <pre id="response"></pre>
+<body onload="sendRequest()">
+    <h3>Product List</h3>
+    <div id="response">Loading...</div>
 </body>
 </html>
