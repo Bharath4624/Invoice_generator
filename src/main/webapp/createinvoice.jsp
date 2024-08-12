@@ -95,7 +95,7 @@ ResultSet rs = null;
                 rs = stmt.executeQuery("SELECT * FROM products");
                 while (rs.next()) {
             %>
-            <tr>
+            <tr>.
                 <td>
                     <input type="checkbox" name="product" value="<%= rs.getString(1) %>"/><%= rs.getString(1) %>
                 </td>
@@ -113,7 +113,7 @@ ResultSet rs = null;
             %>
             <tr>
                 <td>
-                    <input type="submit" name="Submit" value="Get invoice"/>
+                    <input type="submit" name="Submit" value="Place order"/>
                 </td>
             </tr>
         </table>
