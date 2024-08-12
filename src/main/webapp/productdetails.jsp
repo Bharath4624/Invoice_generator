@@ -24,7 +24,7 @@
         }
         function displayTable(data) {
             const products = data.Products;
-            let tableHtml = '<table border="1" cellpadding="5" cellspacing="0"><thead><tr><th>Name</th><th>Price</th></tr></thead><tbody>';
+            let tableHtml = '<table border="1"><thead><tr><th>Name</th><th>Price</th></tr></thead><tbody>';
             products.forEach(product => {
                 tableHtml += `<tr><td>${product.Name}</td><td>${product.Price}</td></tr>`;
             });
