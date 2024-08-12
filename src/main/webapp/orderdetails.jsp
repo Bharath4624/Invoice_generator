@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customer Details</title>
+    <title>Order Details</title>
     <script>
         async function sendRequest(option) {
             try {
