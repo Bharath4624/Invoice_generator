@@ -117,7 +117,7 @@ ResultSet rs = null;
             %>
             <tr>
                 <td>
-                    <input type="submit" name="Submit" value="Place order"/>
+                    <input type="submit" name="Submit" value="Get Invoice"/>
                 </td>
             </tr>
         </table>
